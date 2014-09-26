@@ -1,0 +1,133 @@
+/**
+* Citation: Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+* http://cssreset.com
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+display: block;
+}
+body {
+line-height: 1;
+}
+ol, ul {
+list-style: none;
+}
+blockquote, q {
+quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+content: '';
+content: none;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+/*End of css reset*/
+
+body {
+	line-height: 1.5;
+	font-family: Sans-serif;
+	font-size: 14px;
+	width: 1000px;
+}
+
+h1 {
+	color: #fff;
+	font-size: 64px;
+	font-weight: bold;
+	padding-top: 25px;
+	text-align: center;
+}
+
+h2 {
+	font-size: 28px;
+	font-weight: bold;
+}
+
+#heading {
+	height: 125px;
+	margin: 15px 0px;
+	background-color: #9A0000;
+}
+
+#stanford-logo {
+	float: right;
+}
+
+#information {
+	float: left;
+	width: 200px;
+}
+
+#profile {
+	float: left;
+	margin: 0px 15px;
+	width: 760px;
+}
+
+#profile-pic {
+	float: left;
+	margin-bottom: 10px;
+}
+
+#status-column {
+	float: left;
+	margin: 0px 15px;	
+	width:500px;
+}
+
+#post-updates {
+	float: left;
+	margin: 15px 0px;
+	width: 200px;
+}
+
+#text-area {
+	width: 192px;
+	height: 70px;
+	margin-bottom: 5px;
+}
+
+.title {
+	background-color: #CC9191;
+	font-weight: bold;
+	margin-top: 5px;
+	padding: 5px;
+	clear: both;
+	border-top: 2px solid;
+	border-bottom: 2px solid;
+}
+
+.bold-text {
+	font-weight: bold;
+}
+
+.status {
+	border-top: 1px solid;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	font-size: 14px;
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title> Bookland </title>
+		<style>
+			p {
+				color: #EDEDED;
+			}
+			h1 {
+				font-weight: bold;
+				text-align: center;
+				font-size: 100px;
+				color: #EDEDED;
+			}
+			body {
+				background: url(stack_of_books.jpg) center center no-repeat;
+				background-color: rgba(0, 0, 0, 0.6);
+				width: 1000px;
+				font-family: sans-serif;
+				font-weight: bold;
+			}
+
+			input[type="button"] {
+				border: 1px solid #E7BF93;
+				background-color: black;
+				color: #EDEDED;
+				border: 1px solid #777777;
+			}
+
+			#bookform {
+				text-align: center;
+			}
+
+			textarea {
+				background-color: #E7BF93;
+	  			border: 1px solid #777777; 
+				padding: 10px;
+				height: 300px;
+				width: 500px;
+	   			resize: none;
+			}
+
+			#bookform {
+				padding-left: 50px;
+			}
+
+			input[type="text"] {
+				border-width: 0px;
+				background-color: #E7BF93;
+				border: solid #777777;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>bookland</h1>
+		<form id = "bookform">
+			<fieldset>
+				<p>Author Name: <span class = "textbox"><input type = "text" name = "author" id = "author-name"/></span></p>
+				<p>Book Title: <span class = "textbox"><input type = "text" name = "booktitle" id = "book-title"/></span></p>
+				<p><input type = "button" name = "findBook" value = "Find Book" onclick="searchBook();"/>
+				<input type = "button" name = "clearInfo" value = "Clear Info" onclick="clearFields();"/></p>
+				<textarea readonly id="bookOutput" name="book_info" value = "Search Results are displayed here..."></textarea>
+			</fieldset>
+		</form>
+
+		<script type="text/javascript">
+		function clearFields() {
+			document.getElementById('book-title').value = '';
+			document.getElementById('author-name').value = '';
+			document.getElementById('bookOutput').value = 'Search Results are displayed here...';
+		}
+
+		var allBooks = [
+			{Author: "Thomas Mann", Title: "Death in Venice", Description: "One of the most famous literary works of the twentieth century, this novella embodies themes that preoccupied Thomas Mann in much of his work: the duality of art and life, the presence of death and disintegration in the midst of existence, the connection between love and suffering and the conflict between the artist and his inner self."}, 
+
+			{Author: "James Joyce", Title: "A portrait of the artist as a young man", Description: "This book is a fictional re-creation of the Irish writer\'s own life and early environment. The experiences of the novel\'s young hero, unfold in astonishingly vivid scenes that seem freshly recalled from life and provide a powerful portrait of the coming of age of a young man of unusual intelligence, sensitivity and character."}, {Author: "E. M. Forster", Title: "A room with a view", Description: "This work displays an unusually perceptive view of British society in the early 20th century.It is a social comedy set in Florence, Italy, and Surrey, England. Its heroine, Lucy Honeychurch, struggling against straitlaced Victorian attitudes of arrogance, narroe mindedness and sobbery, falls in love - while on holiday in Italy - with the socially unsuitable George Emerson."}, 
+
+			{Author: "Isabel Allende", Title: "The house of spirits", Description: "Allende describes the life of three generations of a prominent family in Chile and skillfully combines with this all the main historical events of the time, up until Pinochet\'s dictatorship."}, 
+
+			{Author: "Isabel Allende",Title: "Of love and shadows", Description: "The whole world of Irene Beltran, a young reporter in Chile at the time of the dictatorship, is destroyed when she discovers a series of killings carried out by government soldiers. With the help of a photographer, Francisco Leal, and risking her life, she tries to come up with evidence against the dictatorship."}];
+
+		function searchBook() {
+
+			var authorName = document.getElementById('author-name').value;
+			var bookTitle = document.getElementById('book-title').value;
+			var output = '';
+
+			if (authorName != '' || bookTitle != '') {
+				if (authorName == "") {
+					for (var i=0; i < allBooks.length; i++) {
+						if(allBooks[i].Title == bookTitle) {
+							output += allBooks[i].Author + "\n\n" + allBooks[i].Description + "\n\n";
+							output += "-----------------------\n";
+						}
+					}
+				} else if (bookTitle == "") {
+					for (var i=0; i < allBooks.length; i++) {
+						if(allBooks[i].Author == authorName) {
+							output += allBooks[i].Title + "\n\n" + allBooks[i].Description + "\n\n";
+							output += "-----------------------\n";
+						}
+					}
+				} else {
+					for (var i=0; i < allBooks.length; i++) {
+						if((allBooks[i].Title == bookTitle) && (allBooks[i].Author == authorName)){
+							output += allBooks[i].Description + "\n\n";
+							output += "-----------------------\n";
+						}
+					}
+				}
+
+				if (output == '') {
+					output = "No book found. Please try again with a different title or author name.";
+				}
+			} else {
+				output = 'Please enter a book title or an author name to find a book.';
+			}
+			document.getElementById("bookOutput").value = output;
+		}
+		</script>
+
+	</body>
+</html>

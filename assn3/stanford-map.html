@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="stanford_maps.css" />
+        <meta charset="UTF-8" />
+        <title>Stanford Map</title>
+        <style>
+            body {
+                margin: 0px;
+            }
+
+            #map_frame {
+                border: 15px solid;
+                border-color: grey;
+                margin: 40px;
+                overflow: hidden;
+                float: left;
+            }
+
+            #nav_options {
+                width: 80px;
+                float: left;
+                margin-top: 40px;
+            }
+
+            #up {
+                margin-left: 17px;
+                margin-right: auto;
+                clear: both;
+            }
+
+            #down {
+                margin-left: 17px;
+                margin-right: auto;
+                clear: both;
+            }
+
+            #zoom_options {
+                margin-bottom: 10px;
+            }
+
+            #map {
+                position: relative;
+            }
+
+        </style>
+    </head>
+    <body onload="initialize();">
+        <div id="map_frame">
+            <img id="map" src="map-m.gif" alt="Stanford Map"/>
+        </div>
+
+        <div id="nav_options">
+            <form id="nav_buttons">
+                <div id="zoom_options">
+                        <input type="button" name="zoom_in" value="+" onclick="zoomIn();"/>
+                        <input type="button" name="zoom_out" value="-" onclick="zoomOut()"/>
+                </div>
+                <div class="nav_arrows" id="up"><input type="button" name="up_arrow" value="^" onclick="moveUp()"></div>
+                <span class="nav_arrows" id="left"><input type="button" name="left_arrow" value="<" onclick="moveLeft()"></span>
+                <span class="nav_arrows" id="right"><input type="button" name="right_arrow" value=">" onclick="moveRight()"></span>
+                <div class="nav_arrows" id="down"><input type="button" name="down_arrow" value="V" onclick="moveDown()"></div>
+            </form>
+        </div>
+
+        <script type="text/javascript">
+
+            var borderWidth = 15;
+            var marginWidth = 40;
+            var isMousePressed = false;
+            var mapMouseDownX, mapMouseDownY;
+            var image = document.getElementById("map");
+            var imageS, imageM, imageL, imageXL;
+
+            window.onresize = handleResize;
+            document.onmousemove = handleMouseMove;
+            document.onmousedown = handleMouseDown;
+            document.onmouseup = handleMouseUp;
+            document.ondblclick = handleDblClick;
+
+            function initialize() {
+                handleResize();
+                // Setting the relative position of image so that further calculations
+                // can be done based on this default value
+                image.style.left ="0px";
+                image.style.top = "0px";
+
+                imageS = { src: "map-s.gif", height: 1283, width: 997};
+                imageM = { src: "map-m.gif", height: 2047, width: 1589};
+                imageL = { src: "map-l.gif", height: 3063, width: 2373};
+                imageXL = { src: "map-xl.gif", height: 4084, width: 3164};
+            }
+
+            function handleResize() {
+                var mapFrame = document.getElementById("map_frame");
+                mapFrame.style.width = 0.65*window.innerWidth + "px";
+                mapFrame.style.height = 0.8*window.innerHeight + "px";
+            }
+
+            function handleMouseMove(evt) {
+                if (isMousePressed) {
+                    image.style.left = (evt.clientX + mapMouseDownX) + "px";
+                    image.style.top = (evt.clientY + mapMouseDownY) + "px";
+                    return false; // Firefox requires this!
+                }
+            }
+
+            function handleMouseDown(evt) {
+                document.body.style.cursor = "move";
+                if (isInsideFrame(evt.clientX, evt.clientY)) {
+                    isMousePressed = true;
+                    mapMouseDownX = parseInt(image.style.left) - evt.clientX;
+                    mapMouseDownY = parseInt(image.style.top) - evt.clientY;
+                    return false; // Firefox requires this!
+                }
+            }
+
+            function handleMouseUp(evt) {
+                document.body.style.cursor = "default";
+                if (isMousePressed) {
+                    isMousePressed = false;
+                    return false; // Firefox requires this!
+                }
+            }
+
+            function isInsideFrame (currentX, currentY) {
+
+                // Does NOT work without parseInt()!!!
+                var mapFrame = document.getElementById("map_frame");
+                var minimumX = parseInt(borderWidth) + parseInt(marginWidth);
+                var maximumX = parseInt(minimumX) + parseInt(mapFrame.style.width);
+                var minimumY = minimumX;
+                var maximumY = parseInt(minimumY) + parseInt(mapFrame.style.height);
+
+                var x = parseInt(currentX);
+                var y = parseInt(currentY);
+
+                if (x > minimumX && x < maximumX && y > minimumY && y < maximumY) {
+                    return true;
+                }
+                return false;
+            }
+
+            function handleDblClick(evt) {
+                var map_frame = document.getElementById("map_frame");
+                var currentX = evt.clientX;
+                var currentY = evt.clientY;
+
+                if (isInsideFrame(currentX, currentY)) {
+                    // Recenter map image
+                    var midpointX = 0.5*parseInt(map_frame.style.width);
+                    var midpointY = 0.5*parseInt(map_frame.style.height);
+                    var newMapX = parseInt(image.style.left) + parseInt(midpointX) - parseInt(currentX - borderWidth - marginWidth);
+                    var newMapY = parseInt(image.style.top) + parseInt(midpointY) - parseInt(currentY - borderWidth - marginWidth);
+                    image.style.left = newMapX + "px";
+                    image.style.top = newMapY + "px";
+                    return false;
+                }
+            }
+
+            function moveUp() {
+                var frame = document.getElementById("map_frame");
+                var mapY = parseInt(image.style.top);
+                var newMapY = mapY + 0.5 * parseInt(frame.style.height);
+                image.style.top = newMapY + "px";
+            }
+
+            function moveDown() {
+                var frame = document.getElementById("map_frame");
+                var mapY = parseInt(image.style.top);
+                var newMapY = mapY - 0.5 * parseInt(frame.style.height);
+                image.style.top = newMapY + "px";
+            }
+
+            function moveLeft() {
+                var frame = document.getElementById("map_frame");
+                var mapX = parseInt(image.style.left);
+                var newMapX = mapX + 0.5 * parseInt(frame.style.width);
+                image.style.left = newMapX + "px";
+            }
+
+            function moveRight() {
+                var frame = document.getElementById("map_frame");
+                var mapX = parseInt(image.style.left);
+                var newMapX = mapX - 0.5 * parseInt(frame.style.width);
+                image.style.left = newMapX + "px";
+            }
+
+            function zoomIn() {
+                var imageWidthRatio;
+                var imageHeightRatio;
+                // Check for substring to identify which is the current image.
+                // Done because image.src gives the absolute path of image whereas array only has the name of the image stored
+                // http://stackoverflow.com/questions/1789945/how-can-i-check-if-one-string-contains-another-substring-in-javascript
+                if (image.src.indexOf(imageS.src) > -1) {
+                    image.src = imageM.src;
+                    imageWidthRatio = parseInt(imageM.width)/parseInt(imageS.width);
+                    imageHeightRatio = parseInt(imageM.height)/parseInt(imageS.height);
+                    rePositionImage(imageWidthRatio, imageHeightRatio);
+                } else if (image.src.indexOf(imageM.src) > -1) {
+                    image.src = imageL.src;
+                    imageWidthRatio = parseInt(imageL.width)/parseInt(imageM.width);
+                    imageHeightRatio = parseInt(imageL.height)/parseInt(imageM.height);
+                    rePositionImage(imageWidthRatio, imageHeightRatio);
+                } else if (image.src.indexOf(imageL.src) > -1) {
+                    image.src = imageXL.src;
+                    imageWidthRatio = parseInt(imageXL.width)/parseInt(imageL.width);
+                    imageHeightRatio = parseInt(imageXL.height)/parseInt(imageL.height);
+                    rePositionImage(imageWidthRatio, imageHeightRatio);
+                } else {
+                    // do nothing
+                }
+            }
+
+            function zoomOut() {
+                var imageWidthRatio;
+                var imageHeightRatio;
+                // Check for substring to identify which is the current image.
+                // Done because image.src gives the absolute path of image whereas array only has the name of the image stored
+                // http://stackoverflow.com/questions/1789945/how-can-i-check-if-one-string-contains-another-substring-in-javascript
+                if (image.src.indexOf(imageXL.src) > -1) {
+                    image.src = imageL.src;
+                    imageWidthRatio = parseInt(imageL.width)/parseInt(imageXL.width);
+                    imageHeightRatio = parseInt(imageL.height)/parseInt(imageXL.height);
+                    rePositionImage(imageWidthRatio, imageHeightRatio);
+                } else if (image.src.indexOf(imageL.src) > -1) {
+                    image.src = imageM.src;
+                    imageWidthRatio = parseInt(imageM.width)/parseInt(imageL.width);
+                    imageHeightRatio = parseInt(imageM.height)/parseInt(imageL.height);
+                    rePositionImage(imageWidthRatio, imageHeightRatio);
+                } else if (image.src.indexOf(imageM.src) > -1) {
+                    image.src = imageS.src;
+                    imageWidthRatio = parseInt(imageS.width)/parseInt(imageM.width);
+                    imageHeightRatio = parseInt(imageS.height)/parseInt(imageM.height);
+                    rePositionImage(imageWidthRatio, imageHeightRatio);
+                } else {
+                    // do nothing
+                }
+            }
+
+            function rePositionImage(imageWidthRatio, imageHeightRatio) {
+                var frame = document.getElementById("map_frame");
+                // Image left is the the relative position of image from its normal position.
+                // By default it is 0. Takes negative or positive values depending on the current position
+                // imageX gives the centered position of image in the frame
+                var imageX = 0.5*parseInt(frame.style.width) - parseInt(image.style.left);
+                // imageY gives the centered position of image in the frame
+                var imageY = 0.5*parseInt(frame.style.height) - parseInt(image.style.top);
+
+                // Scaling x and y coordinates according to the image ratio
+                var scaledX = imageX * imageWidthRatio;
+                var scaledY = imageY * imageHeightRatio;
+
+                // x and y coordinates for the centered position of image in the frame
+                var newImageX = 0.5*parseInt(frame.style.width) - parseInt(scaledX);
+                var newImageY = 0.5*parseInt(frame.style.height) - parseInt(scaledY);
+
+                image.style.left = newImageX + "px";
+                image.style.top = newImageY + "px";
+            }
+        </script>
+    </body>

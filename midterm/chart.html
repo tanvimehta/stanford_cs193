@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="stanford_maps.css" />
+    <meta charset="UTF-8" />
+    <title>Bar Chart</title>
+    <style>
+        body {
+            font-family: serif;
+            width: 1000px;
+        }
+        #label {
+            padding: 5px;
+        }
+
+        #color {
+            padding: 5px;
+        }
+
+        #amount {
+            padding: 5px;
+        }
+
+        .columnHeader {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            float: left;
+            margin: 15px;
+            border:2px solid black;
+        }
+
+        th,td
+        {
+            width: 100px;
+            height: 25px;
+            border-collapse: collapse;
+            border:2px solid black;
+        }
+
+        #bar-chart {
+            width: 400px;
+            height: 200px;
+            border: 1px black solid;
+        }
+    </style>
+</head>
+<body>
+<h1>Bar Chart</h1>
+<div>
+    <form id = "barForm">
+        <div id="label">
+            Label: <input type="text" name="labelField"/><br>
+        </div>
+        <div id ="color">
+            Color: <select name="colorSelect">
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+                <option value="gray">Gray</option>
+                <option value="red">Red</option>
+                <option value="silver">Silver</option>
+                <option value="yellow">Yellow</option>
+            </select><br>
+        </div>
+        <div id ="amount">
+            Amount: <input type="text" name = "amountField"/>
+            <input type="button" value="Add Entry" onclick = "addEntry()"/>
+        </div>
+    </form>
+    <div id ="bar-chart">
+    </div>
+        <table id = "bar-table">
+            <tr>
+                <td class="columnHeader">Label</td>
+                <td class="columnHeader">Amount</td>
+            </tr>
+        </table>
+    <p> PLEASE GRADE ME ON FIREFOX. THANK YOU!</p>
+</div>
+<script>
+    var colorArray = [
+        {index: 0, color: "green"},
+        {index: 1, color: "blue"},
+        {index: 2, color: "gray"},
+        {index: 3, color: "red"},
+        {index: 4, color: "silver"},
+        {index: 5, color: "yellow"}
+    ]
+
+    var barArray = [];
+
+    var numOfBars = 0;
+
+    function addEntry() {
+        var labelValue = document.getElementById('barForm').labelField.value;
+        var colorIndex = document.getElementById('barForm').colorSelect.selectedIndex;
+        var colorValue = colorArray[colorIndex].color;
+        var amountValue = document.getElementById('barForm').amountField.value;
+        numOfBars++;
+
+        var barDiv = document.getElementById('bar-chart');
+        // Subtracting 2 pixels to ensure that the border of the div is visible
+        var calcWidth = (parseInt(barDiv.offsetWidth) - 2)/100 * parseInt(amountValue) + "px";
+        var height = (parseInt(barDiv.offsetHeight) - 2) / numOfBars + "px";
+        barArray.push({label: labelValue, color: colorValue, amount: amountValue, width: calcWidth});
+
+        var innerValue = "";
+
+        for(i = 0; i < barArray.length; i++) {
+            innerValue = innerValue + "<div style='background: "+ barArray[i].color + ";width: " + barArray[i].width + " ;height:" + height + "'></div>";
+            innerTable = innerTable + "<"
+        }
+        barDiv.innerHTML = innerValue;
+
+        var barTable = document.getElementById("bar-table");
+        var innerTable = barTable.innerHTML;
+        innerTable = innerTable + "<tr><td style='background: " + colorValue + "'>" + labelValue + "</td>" +
+                "<td style='background: " + colorValue + "'>" + amountValue + "</td>";
+        barTable.innerHTML = innerTable;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>College Information</title>
+    <style>
+        body {
+            width: 1100px;
+        }
+        table {
+            border-collapse: collapse;
+            font-family: sans-serif;
+            width: 50%;
+            border-color: black;
+            float: left;
+        }
+
+        td {
+            height: 25px;
+            padding-left: 5px;
+        }
+
+        td.columnHeader {
+            color: white;
+            background-color: black;
+            text-align:center;
+            border-color: white;
+        }
+
+        td.oddRow {
+            background-color: #EEE;
+        }
+
+        #search-criteria {
+            border: 2px solid;
+            border-color: grey;
+            width: 400px;
+        }
+
+        #display-info {
+            margin-top: 10px;
+            border: 2px solid;
+            border-color: grey;
+            width: 400px;
+        }
+
+        h3 {
+            background: black;
+            color: white;
+            padding-top: 5px;
+            margin-top: 0px;
+            text-align: center;
+        }
+
+        .subscript {
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        input[type="text"] {
+            margin-right: 5px;
+            float: right;
+            margin-top: 5px;
+            height: 15px;
+        }
+
+        label {
+            margin-left: 5px;
+        }
+
+        td {
+            white-space: nowrap;
+        }
+
+        #rightColumn {
+            float: right;
+        }
+
+        input[type="button"] {
+            margin-top: 50px;
+            height: 30px;
+            background: grey;
+        }
+    </style>
+</head>
+<body onload="updateColleges();">
+<h1>Bay Area Colleges and Universities</h1>
+<div id="colleges">
+<table>
+    <tr>
+        <td class="columnHeader">Name</td>
+        <td class="columnHeader">SAT High</td>
+        <td class="columnHeader">SAT Low</td>
+        <td class="columnHeader">Tuition</td>
+        <td class="columnHeader">Room and Board</td>
+    </tr>
+    <tr>
+        <td>Stanford University</td>
+        <td>1550</td>
+        <td>1360</td>
+        <td>27204</td>
+        <td>8680</td>
+    </tr>
+    <tr>
+        <td class="oddRow">University of California, Berkeley</td>
+        <td class="oddRow">1550</td>
+        <td class="oddRow">1360</td>
+        <td class="oddRow">27204</td>
+        <td class="oddRow">8680</td>
+    </tr>
+</table>
+</div>
+<div id = "rightColumn">
+    <br>
+        <form id = "search-criteria">
+            <h3>Search Criteria</h3>
+            <input type="radio" name="searchCriteria" value="public"/>Public
+            <input type="radio" name="searchCriteria" value="private"/>Private
+            <input type="radio" name="searchCriteria" value="dont-care" checked/>Don't Care<br/><br/>
+            <label>Maximum Tuition</label> <input type="text" name="maxTuition"/><br/>
+            <span class="subscript">leave blank for don't care</span><br/>
+            <label>Maximum High SAT</label> <input type="text" name="maxHighSAT"/><br/>
+            <span class="subscript">leave blank for don't care</span><br/>
+            <label>Minimum Low SAT</label> <input type="text" name="minLowSAT"/><br/>
+            <span class="subscript">leave blank for don't care</span><br/>
+        </form>
+
+        <form id = "display-info">
+            <h3>Information to Display</h3>
+            <input type="radio" name="displayInfo" value="name" checked/>Fullname
+            <input type="radio" name="displayInfo" value="nick"/>Nickname<br/><br/>
+            <label>SAT Information</label> <input type="checkbox" name="SATInfo" checked/><br/>
+            <label>Tuition Information</label> <input type="checkbox" name="tutInfo" checked/><br/>
+            <label>System</label> <input type="checkbox" name="system"/><br/>
+        </form>
+
+        <input type="button" value="Update" onclick="updateColleges();"/>
+    <br>
+</div>
+<script type="text/javascript">
+    var univArray = [
+            {name: "Stanford University", nick: "Stanford", ownership: "private", sys: "n/a", SATh: 1550, SATl: 1360, tuition: 27204, room: 8680},
+            {name: "University of California, Berkeley", nick: "UC Berkeley", ownership: "public", sys: "University of California", SATh: 1440, SATl: 1170, tuition: 4200, room: 10608},
+            {name: "University of California, Santa Cruz", nick: "UC Santa Cruz", ownership: "public", sys: "University of California", SATh: 1270, SATl: 1030, tuition: 4384, room: 9708},
+            {name: "San Francisco State University", nick: "SFSU", ownership: "public", sys: "CalState", SATh: 1120, SATl: 850, tuition: 1826, room: 6736},
+            {name: "San Jose State University", nick: "SJSU", ownership: "public", sys: "CalState", SATh: 1140, SATl: 860, tuition: 1912, room: 7395},
+            {name: "Sonoma State University", nick: "Sonoma State", ownership: "public", sys: "CalState", SATh: 1140, SATl: 930, tuition: 2226, room: 9606},
+            {name: "California State University, Hayward", nick: "CalState Hayward", ownership: "public", sys: "CalState", SATh: 1050, SATl: 810, tuition: 1800, room: 6435},
+            {name: "University of San Francisco", nick: "USF", ownership: "private", sys: "Roman Catholic", SATh: 1240, SATl: 1030, tuition: 21780, room: 9080},
+            {name: "Santa Clara University", nick: "SCU", ownership: "private", sys: "Roman Catholic", SATh: 1300, SATl: 1110, tuition: 23445, room: 8904},
+            {name: "Mills College", nick: "Mills College", ownership: "private", sys: "n/a", SATh: 1130, SATl: 920, tuition: 19482, room: 7832}
+    ];
+
+    function updateColleges() {
+        var collegeTableDiv = document.getElementById("colleges");
+
+        collegeTableDiv.innerHTML = "<table></table>";
+
+        var nameOptions = document.getElementsByName("displayInfo");
+        var isFullName = false;
+        var isNick = false;
+        var isTuition = false;
+        var isSys = false;
+        var isSAT = false;
+
+        // Get all search criteria
+        var maxFee = document.getElementById('search-criteria').maxTuition.value;
+        var maxSAT = document.getElementById('search-criteria').maxHighSAT.value;
+        var minSAT = document.getElementById('search-criteria').minLowSAT.value;
+        var ownerRadios = document.getElementsByName('searchCriteria');
+        var owner = "";
+
+        for (i = 0; i < ownerRadios.length; i++) {
+            if(ownerRadios[i].checked) {
+                owner = ownerRadios[i].value;
+            }
+        }
+
+        // If nickname selected or name selected
+        if (nameOptions[0].checked) {
+            isFullName = true;
+        } else {
+            isNick = true;
+        }
+
+        // Get all column names to be displayed
+        var columnsToDisplay = ["Name"];
+        if(document.getElementsByName('SATInfo')[0].checked) {
+            isSAT = true;
+            columnsToDisplay.push("SAT High");
+            columnsToDisplay.push("SAT Low");
+        }
+
+        if(document.getElementsByName('tutInfo')[0].checked) {
+            isTuition = true;
+            columnsToDisplay.push("Tuition");
+            columnsToDisplay.push("Room and Board");
+        }
+
+        if(document.getElementsByName('system')[0].checked) {
+            isSys = true;
+            columnsToDisplay.push("System");
+        }
+
+        // Display selected column headers
+        var columnHeadersHTML = "";
+        for (i = 0; i < columnsToDisplay.length; i++) {
+            columnHeadersHTML = columnHeadersHTML.concat("<td class=\"columnHeader\">" + columnsToDisplay[i] + "</td>");
+        }
+
+        // Copy array by value. http://stackoverflow.com/questions/7486085/copying-array-by-value-in-javascript
+        var univArrayFiltered = univArray.slice(0);
+
+        if (owner != undefined) {
+            filterByOwner(univArrayFiltered, owner);
+        }
+
+        if (maxFee != undefined) {
+            filterByMaxFee(univArrayFiltered, maxFee);
+        }
+
+        if (maxSAT != undefined) {
+            filterByMaxSAT(univArrayFiltered, maxSAT);
+        }
+
+        if (minSAT != undefined) {
+            filterByMinSAT(univArrayFiltered, minSAT);
+        }
+        var univRows = "";
+        for (var i=0; i < univArrayFiltered.length; i++) {
+
+        univRows = univRows.concat("<tr>");
+            if (i%2 != 0) {
+                rowFormat = "class=\"oddRow\"";
+            } else {
+                rowFormat = "class=\"evenRow\"";
+            }
+
+            if (isFullName) {
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].name + "</td>");
+            }
+
+            if (isNick) {
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].nick + "</td>");
+            }
+
+            if (isSAT) {
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].SATh + "</td>");
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].SATl + "</td>");
+            }
+
+            if (isTuition) {
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].tuition + "</td>");
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].room + "</td>");
+            }
+
+            if (isSys) {
+                univRows = univRows.concat("<td " + rowFormat + ">" + univArrayFiltered[i].sys + "</td>");
+            }
+        univRows = univRows.concat("</tr>");
+        }
+
+        collegeTableDiv.innerHTML = "<table border = \"1\"><tr>" + columnHeadersHTML + "</tr>" + univRows + "</table>";
+    }
+
+    function filterByOwner(array, owner) {
+        if (owner.length > 0) {
+            for (var i=0; i < array.length; i++) {
+                if (owner == "public" && array[i].ownership == "private") {
+                    array.splice(i, 1);
+                    i--;
+                } else if(owner == "private" && array[i].ownership == "public") {
+                    array.splice(i,1);
+                    i--;
+                }
+            }
+        }
+    }
+
+    function filterByMaxFee(array, maxFee) {
+        if (maxFee.length > 0) {
+            for (var i=0; i < array.length; i++) {
+                if(array[i].tuition >= maxFee) {
+                    // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
+                    array.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
+
+    function filterByMaxSAT(array, maxSAT) {
+        if (maxSAT.length > 0) {
+            for (var i=0; i < array.length; i++) {
+                if(array[i].SATh >= maxSAT) {
+                    // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
+                    array.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
+
+    function filterByMinSAT(array, minSAT) {
+        if (minSAT.length > 0) {
+            for (var i=0; i < array.length; i++) {
+                if(array[i].SATl <= minSAT) {
+                    // http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
+                    array.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

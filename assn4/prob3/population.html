@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html data-ng-app>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>City population Data</title>
+</head>
+<body>
+
+<div data-ng-init="populationDataList = [{metropolis: 'Mumbai', continent: 'Asia', population: '20400000'},
+                         {metropolis: 'New York', continent: 'North America', population: '21295000'},
+                         {metropolis: 'San Francisco', continent: 'North America', population: '5780000'},
+                         {metropolis: 'London', continent: 'Europe', population: '8580000'},
+                         {metropolis: 'Rome', continent: 'Europe', population: '2715000'},
+                         {metropolis: 'Melbourne', continent: 'Australlia', population: '3900000'},
+                         {metropolis: 'San Jose', continent: 'North America', population: '7354555'},
+                         {metropolis: 'Rostov-on-Don', continent: 'Europe', population: '1052000'}]">
+</div>
+<h1>Cities</h1>
+Search: <input data-ng-model="searchText">
+<ul id="searchTextResults">
+    <li data-ng-repeat="populationData in populationDataList | filter:searchText">
+        {{populationData.metropolis}}, {{populationData.continent}},
+        {{populationData.population}}
+    </li>
+</ul>
+<script src="angular.js"></script>
+</body>
+</html>

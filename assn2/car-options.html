@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title> Car Options </title>
+		<style>
+
+		body {
+			margin: 15px;
+			font-size: 14px;
+		}
+
+		fieldset {
+			width: 400px;
+		}
+
+		form {
+			width: 1000px;
+		}
+
+		img {
+			float: right;
+		}
+
+		h1 {
+			width: 1000px;
+		}
+
+		.price {
+			float: right;
+		}
+		.spaceAfter {
+			padding-bottom: 15px;
+		}
+
+		.col {
+			float: left;
+			width: 400px;
+			height: 150px;
+		}
+		
+		#firstRow {
+			width: 1000px;
+			height: 185px;
+		}
+		</style>
+	</head>
+<body>
+	<h1>Configure Your GT Super Sportscar</h1>
+	<div id = "firstRow">
+	<form id = "configuration">
+		<fieldset class="col">
+			<h3>CONFIGURATION</h3>
+			<input type="radio" name="config" value="17790"/>GT Manual <span class="price">$17,790.00</span><br>
+			<input type="radio" name="config" value="18590"/>GT Automatic <span class="price">$18,590.00</span><br>
+			<input type="radio" name="config" value="24455"/>GT-S Manual <span class="price">$24,455.00</span><br>
+			<input type="radio" name="config" value="23155"/>GT-S Sportshift <span class="price">$23,155.00</span>
+		</fieldset>
+	</form>
+	<form id = "color">
+		<fieldset class="col">
+			<h3>CHOOSE A COLOUR</h3>
+			<img id="car"src="red.jpg" alt="Car in Selected Color"/>
+			<select name="colorSelect" size=5 onchange="changePhoto();">
+			  <option value="red">Red</option>
+			  <option value="blue">Blue</option>
+			  <option value="silver">Silver</option>
+			  <option value="white">White</option>
+			  <option value="black">Black</option>
+			</select>
+		</fieldset>
+	</form>
+    </div>
+	<div class = "spaceAfter">
+	<form id = "factory">
+		<fieldset>
+			<h3>FACTORY OPTIONS</h3>
+			<input type="radio" name="factoryOptions" value="1235"/>Option Combo #1 <span class="price">$1235.00</span><br>
+			<ul>
+				<li>Power Windows, Doors, Cruise Control</li>
+			</ul>
+			<input type="radio" name="factoryOptions" value="3354"/>Option Combo #2 <span class="price">$3354.00</span><br>
+			<ul>
+				<li>Rear Spoiler and Fog Lamps</li>
+				<li>Keyless Entry</li>
+				<li>Power Tilt & Slide Moonroof</li>
+				<li>Power Windows, Doors, Cruise Control</li>
+			</ul>
+			<input type="radio" name="factoryOptions" value="0"/>No Combo <span class="price">$0</span><br>
+		</fieldset>	
+	</form>
+	</div>
+
+	<div class = "spaceAfter">
+	<form id = "dealer">
+		<fieldset>
+			<h3>DEALER OPTIONS</h3>
+			<input type="checkbox" name="dealerOptions" value="550"/>Upgraded Stereo System <span class="price">$550.00</span><br>
+			<input type="checkbox" name="dealerOptions" value="339"/>VIP Security System <span class="price">$399.00</span><br>
+			<input type="checkbox" name="dealerOptions" value="295"/>Auto-Dimming Mirror <span class="price">$295.00</span><br>
+		</fieldset>
+	</form>
+	</div>
+
+	<div class = "spaceAfter">
+	<form id = "total">
+		<fieldset>
+			<h3>TOTAL PRICE</h3>
+			<input type="text" name="totalField"/> <span class="price"/>
+			<input type="button" value="Calculate Total" onclick="calculateTotal();">
+		</fieldset>
+	</form>
+	</div>
+	</form>	
+	<script type="text/javascript">
+		function calculateTotal() {
+
+			var total = 0;
+			var configOptions = document.getElementsByName('config');
+			for (i=0; i < configOptions.length; i++) {
+				if (configOptions[i].checked) {
+					total += parseFloat(configOptions[i].value);
+				}
+			}
+
+			var facOptions = document.getElementsByName('factoryOptions');
+			for (i=0; i < facOptions.length; i++) {
+				if (facOptions[i].checked) {
+					total += parseFloat(facOptions[i].value);
+				}
+			}
+
+			var dealOptions = document.getElementsByName('dealerOptions');
+			for (i=0; i < dealOptions.length; i++) {
+				if (dealOptions[i].checked) {
+					total += parseFloat(dealOptions[i].value);
+				}
+			}	
+
+			/** Comma separated number logic from StackOverflow: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript **/
+			totalWithComma = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			document.getElementById('total').totalField.value = "$" + totalWithComma +".00";
+		}
+
+		function changePhoto() {
+			var carPhotos = [
+				{index: 0, pic: "red.jpg"},
+				{index: 1, pic: "blue.jpg"},
+				{index: 2, pic: "silver.jpg"},
+				{index: 3, pic: "white.jpg"},
+				{index: 4, pic: "black.jpg"}
+			]
+			var index = document.getElementById("color").colorSelect.selectedIndex;
+			var carPhoto = document.getElementById("car");
+   		    for (i = 0; i < carPhotos.length; i++) {
+   		    	if (carPhotos[i].index == index) {
+   		    		carPhoto.src = carPhotos[i].pic;
+   		    	}
+   		    } 
+   		}
+</script>
+</body>
+</html>

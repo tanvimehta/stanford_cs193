@@ -1,0 +1,12 @@
+var univArray = new Array(
+		{name: "Stanford University", nick: "Stanford", ownership: "private", sys: "n/a", SATh: 1550, SATl: 1360, tuition: 27204, room: 8680},
+		{name: "University of California, Berkeley", nick: "UC Berkeley", ownership: "public", sys: "University of California", SATh: 1440, SATl: 1170, tuition: 4200, room: 10608},
+		{name: "University of California, Santa Cruz", nick: "UC Santa Cruz", ownership: "public", sys: "University of California", SATh: 1270, SATl: 1030, tuition: 4384, room: 9708},
+		{name: "San Francisco State University", nick: "SFSU", ownership: "public", sys: "CalState", SATh: 1120, SATl: 850, tuition: 1826, room: 6736},
+		{name: "San Jose State University", nick: "SJSU", ownership: "public", sys: "CalState", SATh: 1140, SATl: 860, tuition: 1912, room: 7395},
+		{name: "Sonoma State University", nick: "Sonoma State", ownership: "public", sys: "CalState", SATh: 1140, SATl: 930, tuition: 2226, room: 9606},
+		{name: "California State University, Hayward", nick: "CalState Hayward", ownership: "public", sys: "CalState", SATh: 1050, SATl: 810, tuition: 1800, room: 6435},
+		{name: "University of San Francisco", nick: "USF", ownership: "private", sys: "Roman Catholic", SATh: 1240, SATl: 1030, tuition: 21780, room: 9080},
+		{name: "Santa Clara University", nick: "SCU", ownership: "private", sys: "Roman Catholic", SATh: 1300, SATl: 1110, tuition: 23445, room: 8904},
+		{name: "Mills College", nick: "Mills College", ownership: "private", sys: "n/a", SATh: 1130, SATl: 920, tuition: 19482, room: 7832}
+		);

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Weather Channel (Let it rain!!!)</title>
+    <style>
+        .text-area-setting {
+            margin-top: 10px;
+            height: 200px;
+            width: 90%;
+        }
+        .button-setting {
+            height: 25px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .pre-input-text-box-font {
+            font-weight: bold;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<h1>YAHOO Weather via AJAX</h1>
+
+<div>
+    <span class="pre-input-text-box-font">Enter the Zip Code:</span>
+    <input type="text" id="zipcode"/>
+    <input class="button-setting" type="button" onclick="fetchYahooWeather()" value="Get Weather"/>
+    <input class="button-setting"  type="button" onclick="clearWeather()" value="Clear">
+</div>
+<textarea class="text-area-setting" id="weatherTextArea" readonly></textarea>
+
+<script>
+    function fetchYahooWeather() {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange=function() {
+            var xmlResponse = xmlHttp.responseXML;
+            if(xmlResponse !=null && xmlResponse.getElementsByTagName("yweather:location").length >0) {
+                var location = xmlResponse.getElementsByTagName("yweather:location")[0].getAttribute("city");
+                var weatherCondition = xmlResponse.getElementsByTagName("yweather:condition")[0];
+                var weatherDesc = weatherCondition.getAttribute("text");
+                var temperature = weatherCondition.getAttribute("temp");
+                document.getElementById("weatherTextArea").value += location + ": " + temperature + ", " + weatherDesc + "\n";
+            }
+        }
+        var url = "http://web.stanford.edu/~psyoung/cgi-bin/a3.php?yws_path=" + encodeURIComponent("p=" + document.getElementById("zipcode").value)
+        xmlHttp.open('GET', url, true);
+        xmlHttp.send();
+    }
+    function clearWeather() {
+        document.getElementById("weatherTextArea").value = "";
+    }
+</script>
+</body>
+</html>

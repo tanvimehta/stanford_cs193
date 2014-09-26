@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="stanford_maps.css" />
+    <meta charset="UTF-8" />
+    <title>Yes or No?</title>
+    <style>
+        body {
+            width: 1000px;
+            font-family: sans-serif;
+        }
+        #yes {
+            font-family: serif;
+            border: 5px solid green;
+            padding: 0px;
+            float: left;
+        }
+        #no {
+            font-family: serif;
+            border: 5px solid red;
+            padding: 0px;
+            float: left;
+        }
+        #whole_thing {
+            float: left;
+        }
+
+        #decision {
+            font-size: 14px;
+            padding: 15px;
+            clear: both;
+        }
+    </style>
+</head>
+<body onload="initialize()">
+<h1>Yes or No? </h1>
+<div>
+    <div id = "yes" onclick="selectYes()">
+        <p>Yes</p>
+    </div>
+    <div id = "no" onclick="selectNo()">
+        <p>No</p>
+    </div>
+</div>
+    <div id = "decision"><p>Undecided</p></div>
+    <p>PLEASE GRADE ME ON FIREFOX. THANK YOU!</p>
+<script>
+    window.onresize = initialize;
+    window.onclick = clearDecision;
+    var isDecisionSelect = false;
+
+    function initialize() {
+        var yesDiv = document.getElementById("yes");
+        var noDiv = document.getElementById("no");
+
+        yesDiv.style.width = 0.33 * parseInt(window.innerWidth) + "px";
+        yesDiv.style.height = 0.33 * parseInt(window.innerWidth) + "px";
+        noDiv.style.width = 0.33 * parseInt(window.innerWidth) + "px";
+        noDiv.style.height = 0.33 * parseInt(window.innerWidth) + "px";
+    }
+
+    function selectYes() {
+        var yesDiv = document.getElementById("yes");
+        yesDiv.style.background = "green";
+        var noDiv = document.getElementById("no");
+        noDiv.style.background = "white";
+        var finalDecision = document.getElementById("decision");
+        finalDecision.innerHTML = "<p>Yes</p>";
+        isDecisionSelect = true;
+    }
+
+    function selectNo() {
+        var yesDiv = document.getElementById("yes");
+        yesDiv.style.background = "white";
+        var noDiv = document.getElementById("no");
+        noDiv.style.background = "red";
+        var finalDecision = document.getElementById("decision");
+        finalDecision.innerHTML = "<p>No</p>";
+        isDecisionSelect = true;
+    }
+
+    function clearDecision() {
+        if (!isDecisionSelect) {
+            var yesDiv = document.getElementById("yes");
+            yesDiv.style.background = "white";
+            var noDiv = document.getElementById("no");
+            noDiv.style.background = "white";
+            var finalDecision = document.getElementById("decision");
+            finalDecision.innerHTML = "<p>Undecided</p>";
+        }
+        isDecisionSelect = false;
+    }
+</script>
+</body>
+</html>

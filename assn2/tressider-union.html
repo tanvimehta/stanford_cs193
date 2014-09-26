@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title> Tresidder Union Offices </title>
+		<style>
+			body {
+				width: 640px;
+				margin-left: auto;
+				margin-right: auto;
+				font-family: sans-serif;
+			}
+
+			#heading {
+				margin-top: 15px;
+				clear: both;
+			}
+
+			#seal {
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<img id = "heading" src = "offices-bnr.gif" alt = "Tresidder Banner"/>
+		<img id = "seal" src = "seal.gif" alt= "Stanford Seal"/>
+		<p>
+			Tresidder Union houses a number of University Offices. Most of these offices are part of the Vice-Provost Student Affairs (VPSA) organization.
+		</p>
+		<p>
+			To learn more about an individual office in Tresidder, select the name of the office from the pulldown menu below:
+		</p>
+		<form id = "officeForm">
+			<select name = "officeSelect" onChange = "popUpOffice();">
+				<option value = "Choose an Office">Choose an office</option>
+				<option value = "Residential Education (ResEd)">Residential Education (ResEd)</option>
+				<option value = "Student Services Center">Student Services Center</option>
+				<option value = "Office of Student Affairs (OSA)">Office of Student Affairs (OSA)</option>
+				<option value = "Vice-Provost of Student Affairs">Vice-Provost of Student Affairs</option>
+			</select>
+		</form>
+	<script type = "text/javascript">
+
+		var allOffices = [
+		{officeName: "Residential Education (ResEd)", phoneNumber: "725-2800", desc: "The Office of Residential Education is responsible for developing the policies, programs, and staffing which support the intellectual, educational, and community-building activities in student residences.  Second Floor.", logo: "resed.jpg"}, 
+		{officeName: "Dean of Students", phoneNumber: "723-7833", desc: "The Dean of Students office is composed of 13 individual administrative units that are concerned with the general welfare of both undergraduate and graduate students, in and out of the classroom.  Second floor.", logo: "seal-small.gif"}, 
+		{officeName: "Office of Student Activities (OSA)", phoneNumber: "723-2733", desc: "Services for student organizations, student-initiated major events and programs, and fraternities and sororities.  Second floor.", logo: "seal-small.gif"}, 
+		{officeName: "Vice-Provost of Student Affairs", phoneNumber: "725-0911", desc: "The Vice Provost for Student Affairs is responsible to the Provost for providing services and programs to undergraduate and graduate students in support of the academic mission of the University.  Second floor.", logo: "seal-small.gif"}];
+
+		function popUpOffice() {
+
+			var selectedOption = document.getElementById("officeForm").officeSelect.selectedIndex;
+
+			if (selectedOption != 0) {
+				var newWindow = window.open((allOffices[selectedOption-1].officeName), 'officeInfo', 'width=450px, height=300px');
+				// Render window to avoid blank pop up in Chrome for Mac
+				newWindow.resizeTo(450, 300);
+				newWindow.focus();
+				newWindow.document.open();
+				newWindow.document.writeln('<html><head><title>' + allOffices[selectedOption-1].officeName + '</title><style> img {float:right}</style></head>');
+				newWindow.document.writeln('<body><h1>' + allOffices[selectedOption-1].officeName + '</h1>');
+				newWindow.document.writeln('<img src="' + allOffices[selectedOption-1].logo + '" alt = "Office Logo" />');
+				newWindow.document.writeln("<h3>" + allOffices[selectedOption-1].phoneNumber + "</h3>");
+				newWindow.document.writeln("<p>" + allOffices[selectedOption-1].desc + "</p></body></html>");
+				newWindow.document.close();
+
+			}
+		}
+	</script>
+	</body>
+</html>
